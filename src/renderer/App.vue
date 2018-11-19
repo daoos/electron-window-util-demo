@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view class="router-view"></router-view>
   </div>
 </template>
 
@@ -11,5 +11,19 @@
 </script>
 
 <style>
+  #app {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #app * {
+    cursor: default;
+  }
+
+  #app > .router-view {
+    height: 100%;
+    width: 100%;
+  }
+
   /* CSS */
 </style>
