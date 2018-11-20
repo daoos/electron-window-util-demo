@@ -17,7 +17,7 @@
       }
     },
     mounted() {
-      this.parameter = this.$Win.getParameter();
+      this.parameter = this.$Win.parameter;
     },
   }
 </script>

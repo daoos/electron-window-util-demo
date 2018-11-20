@@ -34,6 +34,9 @@ export function bottomRightToleft(_config) {
 
   config.windowConfig.animation.fromConfig.x = screenInfo.workArea.width;
   config.windowConfig.animation.fromConfig.y = config.y;
+
+  config.windowConfig.time = 3000;
+  config.alwaysOnTop = true;
   return config;
 }
 
@@ -54,5 +57,7 @@ export function bottomRightToup(_config) {
   config.windowConfig.animation.fromConfig.x = config.x;
   config.windowConfig.animation.fromConfig.y = screenInfo.workArea.height;
 
+  config.windowConfig.time = 3000;
+  config.alwaysOnTop = true;
   return config;
 }

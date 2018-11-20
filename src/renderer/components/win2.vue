@@ -24,7 +24,7 @@
       }
     },
     mounted() {
-      this.parameter = this.$Win.getParameter();
+      this.parameter = this.$Win.parameter;
       this.$Win.on('_sendMsg',(data, winInfo) => {
         let msg = data;
         if (winInfo.name) {

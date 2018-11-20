@@ -1,12 +1,9 @@
 <template>
   <div class="main_page_box">
-    <!--<div class="btns">-->
-    <!--<button @click="$router.push('/video')">桌面视频</button>-->
-    <!--</div>-->
-    <div class="item" :style="'height:'+(expandIndex===index?(item.children.length+1)*51:50)+'px'"
-         @click="expandIndex=index" v-for="(item,index) in list">
+    <div class="item" :style="'height:'+(item.expand?(item.children.length+1)*51:50)+'px'"
+         @click="item.expand=!item.expand" v-for="(item,index) in list">
       <div class="title">
-        <span class="icon" :class="{expand:expandIndex===index}"></span>
+        <span class="icon" :class="{expand:item.expand}"></span>
         <span class="text">
           {{item.title}}
         </span>
@@ -14,7 +11,7 @@
       <div class="item" v-for="_item in item.children">
         <img @mouseover="openWin('followWin')" @mouseleave="closeWin({name:'followWin',data:'鼠标移开咯~~~'})"
              src="~@/assets/256x256.png">
-        <span @click="_item.click">{{_item.text}}</span>
+        <span @click.stop="_item.click">{{_item.text}}</span>
       </div>
     </div>
   </div>
@@ -27,23 +24,18 @@
     name: 'MainPage',
     data() {
       return {
-        expandIndex: 0,
-
         list: [
           {
             title: '窗口',
+            expand:false,
             children: [
               {
-                text: '打开窗口（多开）',
+                text: '打开窗口（多开）  --  鼠标方图标上有窗口悬浮',
                 click: () => this.openNewWin(),
               },
               {
                 text: '打开窗口（单开）',
                 click: () => this.openNewWin('single'),
-              },
-              {
-                text: '打开窗口（3秒后自动关闭）',
-                click: () => this.openNewWinAutoClose(),
               },
               {
                 text: '打开窗口（单开-复用窗口）',
@@ -65,19 +57,21 @@
           },
           {
             title: '窗口打开动画',
+            expand:false,
             children: [
               {
-                text: '打开窗口（右下角右方滑入）',
+                text: '打开窗口（右下角右方滑入）  --  3秒后自动关闭',
                 click: () => this.openWin('bottomRightToleft'),
               },
               {
-                text: '打开窗口（右下角下方滑入）',
+                text: '打开窗口（右下角下方滑入）  --  3秒后自动关闭',
                 click: () => this.openWin('bottomRightToup'),
               },
             ]
           },
           {
             title: '窗口间通信',
+            expand:false,
             children: [
               {
                 text: '打开/关闭 窗口1',
@@ -95,6 +89,9 @@
           },
         ]
       }
+    },
+    mounted() {
+      console.log(this.$Win)
     },
     methods: {
       async openWin(type) {
@@ -140,17 +137,6 @@
         // console.log(option);
         this.$Win.openWin(option);
       },
-      async openNewWinAutoClose(winName) {
-        let option = {
-          windowConfig: {
-            router: '/landing',
-            name: winName,
-            time: 3000,
-          }
-        };
-        // console.log(option);
-        this.$Win.openWin(option);
-      },
       async openMsgWin(winName) {
 
         let isopen = this.$Win.isOpen(winName)
@@ -182,16 +168,6 @@
         // console.log(option);
         this.$Win.openWin(option);
       },
-      openVideoWin() {
-        let option = {
-          windowConfig: {
-            router: '/video',
-            name: '',
-          }
-        };
-        // console.log(option);
-        this.$Win.openWin(option);
-      },
       closeWin(WinName) {
         this.$Win.closeWin(WinName);
       },
@@ -203,6 +179,7 @@
 
   .main_page_box {
     background-color: #fff;
+    overflow-y: auto;
     .item {
       overflow: hidden;
       height: 50px;
@@ -226,6 +203,7 @@
           border: 2px solid black;
           border-color: transparent black black transparent;
           &.expand {
+            margin-top: 13px;
             transform: rotateZ(45deg);
           }
         }
